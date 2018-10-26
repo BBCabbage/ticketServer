@@ -1,7 +1,7 @@
 {
   "name": "ticketserver",
   "version": "1.0.0",
-  "description": "",
+  "description": "业余程序票窗后端",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
