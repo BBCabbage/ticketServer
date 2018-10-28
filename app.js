@@ -14,7 +14,7 @@ async function initApp() {
 }
 
 //  填入datebase的uri
-var uri = ``;
+var uri = `mongodb+srv://babycabbage:giligiliai@ticket-6xmf2.mongodb.net/test?retryWrites=true`;
 
 mgodb(uri, () => {
     initApp().then(app => {

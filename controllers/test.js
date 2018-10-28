@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-
+var User = require('../models/User');
 
 var test = async ctx => {
     //console.log(ctx.request.header);
@@ -18,12 +18,12 @@ var test = async ctx => {
         console.log(err);
         ctx.response.body = 'failed';
     }*/
-    ({a, b} = ctx.request.body);
-    console.log(a + '\n' + b);
-};
+    users = await User.find({});
+    ctx.response.body = { users: users };
+}
 
 module.exports = [{
-    method: 'POST',
+    method: 'GET',
     path: '/',
     func: test
 }];

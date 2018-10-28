@@ -1,3 +1,5 @@
+//写在controllers下的所有符合格式的api由此模块统一链接进app中
+
 var router = require('koa-router')();
 
 const bindAPI = (c) => {
