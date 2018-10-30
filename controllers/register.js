@@ -27,11 +27,8 @@ async function userReg({ userName, password, phone, address }) {
 }
 
 var register = async ctx => {
+    const resp = require('../auxiliary').resp(ctx);
     ({ userName, password } = ctx.request.body);
-    const resp = (status, body) => {
-        ctx.status = status;
-        ctx.response.body = body;
-    };
     if (!(userName && password))
         resp(400, 'Missing parameters.');
     if (await isExist(userName))
@@ -44,8 +41,10 @@ var register = async ctx => {
     }
 };
 
-module.exports = [{
-    method: 'POST',
-    path: '/api/register',
-    func: register
-}];
+module.exports = {
+    apis: [{
+        method: 'POST',
+        path: '/api/register',
+        func: register
+    }]
+};

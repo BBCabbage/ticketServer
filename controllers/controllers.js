@@ -14,20 +14,18 @@ const bindAPI = (c) => {
 
 async function bindJsAPIs(bin) {
     let js = await require(bin);
-    if (js instanceof Array)
-        js.forEach(c => bindAPI(c));
+    if (js.apis)
+        js.apis.forEach(c => bindAPI(c));
 }
 
 async function bindControllers(dir) {
     const fs = require('fs');
     let js_files = fs.readdirSync(dir)
-                     .filter(f => f.endsWith('.js') && 
-                                  f !== 'controllers.js');
+                     .filter(f => f.endsWith('.js'));
     let to_exec = js_files.map(js_f => 
                                 bindJsAPIs(`${dir}/${js_f}`));
     await Promise.all(to_exec);
 }
-
 
 module.exports = async (dir = __dirname) => {
     await bindControllers(dir);

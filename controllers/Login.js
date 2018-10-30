@@ -22,10 +22,7 @@ async function check(userName, password) {
 }
 
 var login = async ctx => {
-    const resp = (status, body) => {
-        ctx.status = status;
-        ctx.response.body = body;
-    };
+    const resp = require('../auxiliary').resp(ctx);
     let userName, password;
     if (ctx.cookies.get('twtoken')) {
         try {
@@ -44,8 +41,8 @@ var login = async ctx => {
         switch (await check(userName, password)) {
             case checkingStatus.success:
                 resp(200, 'Login succeful.');
-                encoded = await jwt.sign({userName: userName, password: password}, 'tw', {expiresIn: '3d'});
-                ctx.cookies.set('twtoken', encoded);
+                encoded = await jwt.sign({ userName: userName, password: password }, 'tw', { expiresIn: '3d' });
+                ctx.cookies.set('twtoken', encoded, { maxAge: 86400 });
                 break;
             case checkingStatus.pswErr:
                 resp(401, 'Error password.');
@@ -55,8 +52,10 @@ var login = async ctx => {
         }
 };
 
-module.exports = [{
-    method: 'POST',
-    path: '/api/login',
-    func: login
-}];
+module.exports = {
+    apis: [{
+        method: 'POST',
+        path: '/api/login',
+        func: login
+    }]
+};
