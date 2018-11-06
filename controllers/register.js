@@ -10,12 +10,11 @@ async function isExist(userName) {
     }
 }
 
-async function userReg({ userName, password, phone, address }) {
+async function userReg({ userName, password, phone }) {
     var user = new User({
         userName: userName,
         password: password,
         phone: phone || '',
-        address: address || ''
     });
     try {
         if (await user.save())

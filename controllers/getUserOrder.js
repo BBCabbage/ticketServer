@@ -2,6 +2,8 @@ var Order = require('../models/Order');
 var Session = require('../models/Session');
 var Seat = require('../models/Seat');
 var User = require('../models/User');
+var Ticket = require('../models/Ticket');
+const jwt = require('jsonwebtoken');
 
 var getUserOrder = async ctx => {
     const resp = require('../auxiliary').resp(ctx);
@@ -31,20 +33,25 @@ var getUserOrder = async ctx => {
                 resp(404, 'Nothing found.');
                 return;
             }
-            let result = orders.map(order => {
-                let tickets = order.tickets.map(ticket => {
-                    session = await Session.findById(ticket.session);
-                    seat = await Seat.findById(ticket.seat);
-                    return {
-                        _id: ticket,
-                        session: session,
-                        seat: seat
-                    };
+            var res = [];
+            for (order of orders) {
+                let tres = [];
+                for (ticket of order.tickets) {
+                    tk = await Ticket.findById(ticket);
+                    sn = await Session.findById(tk.session);
+                    st = await Seat.findById(tk.seat);
+                    tres.push({
+                        sessionName: sn.name,
+                        seat: st.seat
+                    });
+                }
+                res.push({
+                    _id: order._id,
+                    tickets: tres,
+                    paymentStatus: order.paymentStatus
                 });
-                order.tickets = tickets;
-                return order;
-            });
-            resp(200, { orders: result });
+            }
+            resp(200, { orders: res });
         } catch (e) {
             resp(401, 'Failed.');
         }

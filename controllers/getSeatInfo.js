@@ -1,5 +1,6 @@
 var Seat = require('../models/Seat');
 var User = require('../models/User');
+const jwt = require('jsonwebtoken');
 
 var getSeatInfo = async ctx => {
     const resp = require('../auxiliary').resp(ctx);
@@ -27,7 +28,16 @@ var getSeatInfo = async ctx => {
         }
         try {
             var seats = await Seat.find({ session: ctx.request.body.sessionid });
-            resp(200, { seats: seats });
+            var res = [];
+            for (seat of seats) {
+                if (!seat.isSold)
+                    res.push({
+                        _id: seat._id,
+                        seat: seat.seat,
+                        price: seat.price,
+                    });
+            }
+            resp(200, { seats: res });
         } catch (e) {
             resp(401, 'Failed.');
         }

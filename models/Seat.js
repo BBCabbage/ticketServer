@@ -6,6 +6,10 @@ var SeatSchema = new mongoose.Schema({
         ref: 'Session',
         required: true
     },
+    seat: {
+        type: String,
+        required: true
+    },
     price: {
         type: Number,
         required: true

@@ -23,6 +23,14 @@ var test = async ctx => {
     //resp(200, users);
     //let token = await jwt.verify(ctx.cookies.get('twtoken'), 'tw');
     //ctx.cookies.set('twtoken', '', { maxAge: 0 });
+    if (ctx.cookies.get('test') === 'test') {
+        console.log('cookie');
+    }
+    else {
+        console.log('no cookie');
+    }
+    resp(200, 'test');
+    ctx.cookies.set('test', 'test');
 }
 
 module.exports = {

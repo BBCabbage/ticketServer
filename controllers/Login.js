@@ -42,7 +42,8 @@ var login = async ctx => {
             case checkingStatus.success:
                 resp(200, 'Login succeful.');
                 encoded = await jwt.sign({ userName: userName, password: password }, 'tw', { expiresIn: '3d' });
-                ctx.cookies.set('twtoken', encoded, { maxAge: 86400 });
+                ctx.cookies.set('twtoken', encoded, { maxAge: 14400000 });
+                console.log(encoded);
                 break;
             case checkingStatus.pswErr:
                 resp(401, 'Error password.');

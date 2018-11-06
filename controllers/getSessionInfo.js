@@ -1,5 +1,6 @@
 var Session = require('../models/Session');
 var User = require('../models/User');
+const jwt = require('jsonwebtoken');
 
 var getSessionInfo = async ctx => {
     const resp = require('../auxiliary').resp(ctx);
@@ -23,7 +24,17 @@ var getSessionInfo = async ctx => {
         }
         try {
             var sessions = await Session.find({});
-            resp(200, { sessions: sessions });
+            var res = [];
+            for (session of sessions) {
+                res.push({
+                    _id: session._id,
+                    name: session.name,
+                    singer: session.singer,
+                    sessionTime: session.sessionTime,
+                    place: session.place
+                });
+            }
+            resp(200, { sessions: res });
         } catch (e) {
             resp(401, 'Failed.');
         }
